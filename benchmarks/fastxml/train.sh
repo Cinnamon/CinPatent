@@ -1,0 +1,1 @@
+taskset --cpu-list 1-4 python train.py --model fastxml --data_dir datasets/en_patent_0.75/ --model_dir fastxml_en_patent_0.75

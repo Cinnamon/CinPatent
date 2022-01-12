@@ -1,0 +1,46 @@
+[package]
+name = "omikuji"
+description = "an efficient implementation of Partitioned Label Treesand its variations for extreme multi-label classification"
+version = "0.3.2"
+edition = "2018"
+authors = ["Tom Dong <tom.tung.dyb@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/tomtung/omikuji"
+documentation = "https://docs.rs/omikuji"
+keywords = [
+    "machine-learning",
+    "multi-label",
+    "classification",
+    "xmc",
+]
+readme = "README.md"
+exclude = ["examples/"]
+
+[dependencies]
+clap = { version = "2.33.*", optional = true }
+hashbrown = "0.11.*"
+itertools = "0.10.*"
+log = "0.4.*"
+ndarray = { version = "0.15.*", features = ["serde-1"] }
+num-traits = "0.2.*"
+order-stat = "0.1.*"
+ordered-float = "2.8.*"
+pbr = "1.0.*"
+rand = "0.8.*"
+rayon = "1.5.*"
+serde = { version = '1.0.*', features = ['derive'] }
+serde_cbor = "0.11.*"
+serde_json = "1.0.*"
+simple_logger = { version = "1.13.*", optional = true }
+sprs = { version = "0.11.*", features = ["serde"] }
+
+[dev-dependencies]
+assert_approx_eq = "1.1.*"
+
+[[bin]]
+name = "omikuji"
+path = "src/bin/omikuji.rs"
+required-features = ["cli"]
+
+[features]
+cli = ["simple_logger", "clap"]

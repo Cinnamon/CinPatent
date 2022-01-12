@@ -1,0 +1,97 @@
+trigger:
+  - master
+
+variables:
+  package_name: omikuji
+  python.architecture: 'x64'
+
+stages:
+  - stage: Rust
+    jobs:
+      - job: RustBuild
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: azure-setup-rust.yml
+          - script: |
+              set -e -x
+
+              cargo fmt --all -- --check
+              cargo test --features cli
+
+              cd c-api
+              cargo fmt --all -- --check
+              cargo test
+            displayName: 'Cargo test'
+          - script: |
+              set -e -x
+
+              cargo install --path . --features cli
+              omikuji --help
+
+              cd examples
+              bash run_cli.sh
+            displayName: 'Run example'
+
+  - stage: Python
+    jobs:
+      - job: SDist
+        pool:
+          vmImage: 'ubuntu-latest'
+        variables:
+          python.version: 3.7
+        steps:
+          - template: azure-python-build.yml
+            parameters:
+              sdist: true
+
+      - job: manylinux
+        pool:
+          vmImage: 'ubuntu-latest'
+        container: 'quay.io/pypa/manylinux2010_x86_64:latest'
+        strategy:
+          matrix:
+            Python3.6:
+              python.version: 3.6
+            Python3.7:
+              python.version: 3.7
+            Python3.8:
+              python.version: 3.8
+            Python3.9:
+              python.version: 3.9
+        steps:
+          - template: azure-python-build.yml
+            parameters:
+              manylinux: true
+
+      - job: Windows
+        pool:
+          vmImage: 'vs2017-win2016'
+        strategy:
+          matrix:
+            Python3.6:
+              python.version: 3.6
+            Python3.7:
+              python.version: 3.7
+            Python3.8:
+              python.version: 3.8
+            Python3.9:
+              python.version: 3.9
+        steps:
+          - template: azure-python-build.yml
+
+      - job: macOS
+        pool:
+          vmImage: 'macOS-10.14'
+        strategy:
+          matrix:
+            Python3.6:
+              python.version: 3.6
+            Python3.7:
+              python.version: 3.7
+            Python3.8:
+              python.version: 3.8
+            Python3.9:
+              python.version: 3.9
+        steps:
+          - template: azure-python-build.yml
