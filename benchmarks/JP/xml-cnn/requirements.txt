@@ -1,0 +1,2 @@
+optuna
+torchtext==1.6.0
