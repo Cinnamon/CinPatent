@@ -1,12 +1,14 @@
 import os
-import torch
+import sys
+sys.path.append('../')
+
 import scipy.sparse as sp
 import numpy as np
 from fastxml import Trainer, Inferencer
-from torchmetrics.classification import F1, Precision
-from sklearn.metrics import ndcg_score
 from argparse import ArgumentParser
 from fastxml.weights import propensity
+
+from utils import output_scores
 
 parser = ArgumentParser()
 parser.add_argument("--model", type=str, default="fastxml", help="Model name in (fastxml, pfastxml, pfastrexml")
@@ -28,20 +30,9 @@ def load_y(path, return_sparse=False):
     return res
 
 def get_data(data_dir, dtype: str = "train", return_sparse=False):
-    X = load_X(os.path.join(args.data_dir, f"X.{dtype}.npz"))
-    y = load_y(os.path.join(args.data_dir, f"Y.{dtype}.npz"), return_sparse=return_sparse)
+    X = load_X(os.path.join(data_dir, f"X.{dtype}.npz"))
+    y = load_y(os.path.join(data_dir, f"Y.{dtype}.npz"), return_sparse=return_sparse)
     return X, y
-
-def compute_metrics(y_true, y_prob, threshold: float = 0.5):
-    y_true = torch.from_numpy(y_true)
-    y_prob = torch.from_numpy(y_prob)
-    metrics = {}
-    metrics["micro_f1"] = F1(threshold=threshold, average="micro")(y_prob, y_true).item()
-    for k in (1, 3, 5):
-        metrics[f"p@{k}"] = Precision(threshold=threshold, average="micro", top_k=k)(y_prob, y_true).item()
-        metrics[f"ndcg@{k}"] = ndcg_score(y_true, y_prob, k=k)
-    return metrics
-
 
 # Config
 args = parser.parse_args()
@@ -75,6 +66,4 @@ print("Getting test data")
 X, y = get_data(args.data_dir, "test", return_sparse=True)
 clf = Inferencer(save_model_path)
 y_prob = clf.predict(X, fmt="sparse")
-scores = compute_metrics(y_true=y.toarray(), y_prob=y_prob.toarray())
-for k, v in scores.items():
-    print('{}: {:.2f}'.format(k, v), end=' ')
+output_scores(y_true=y.toarray(), y_prob=y_prob.toarray(), output_dir=args.model_dir)
