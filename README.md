@@ -27,24 +27,24 @@ We partition data with ratio 80:10:10 for training, development, and testing. Fo
 
 ## Structure
 
-The datasets are available with multiple ratios: 10%, 25%, 50%, 75%, and 100% (in `en_patent` and `ja_patent`).
+The datasets are available with multiple ratios: 10%, 25%, 50%, 75%, and 100%.
 
 ```
-cinpatent
-├── en_patent
-│   ├── en.ndjson
-│   └── segmentation
-│       ├── en_0.1.ndjson
-│       ├── en_0.25.ndjson
-│       ├── en_0.5.ndjson
-│       └── en_0.75.ndjson
-└── ja_patent
-    ├── ja.ndjson
-    └── segmentation
-        ├── ja_0.1.ndjson
-        ├── ja_0.25.ndjson
-        ├── ja_0.5.ndjson
-        └── ja_0.75.ndjson
+data
+├── CinPatent-EN
+│   ├── en_0.05.ndjson
+│   ├── en_0.1.ndjson
+│   ├── en_0.25.ndjson
+│   ├── en_0.5.ndjson
+│   ├── en_0.75.ndjson
+│   └── en_1.0.ndjson
+└── CinPatent-JA
+    ├── ja_0.05.ndjson
+    ├── ja_0.1.ndjson
+    ├── ja_0.25.ndjson
+    ├── ja_0.5.ndjson
+    ├── ja_0.75.ndjson
+    └── ja_1.0.ndjson
 ```
 
 ## Contact
