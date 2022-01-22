@@ -55,6 +55,7 @@ def preprocess_data(data: List[str], max_seq_len: int = 768):
 
 def save_processed_data(root_dir: str, texts: List[str], labels: List[str], file_type: str = "train"):
     labels = [r for r in labels]
+    os.makedirs(root_dir, exist_ok=True)
     with open(os.path.join(root_dir, file_type + ".json"), 'w', encoding='utf-8') as f:
         json.dump({'text': texts, 'label': labels}, f, indent=4)
 

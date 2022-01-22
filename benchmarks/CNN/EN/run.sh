@@ -1,13 +1,18 @@
-#!/bin/sh
+export CUDA_VISBLE_DEVICES=0
 
-echo "Installing dependencies..."
-pip install -r requirements.txt
+DATA_PREFIX='CinPatent-EN/en_0.05'
+DATA_DIR=datasets/$DATA_PREFIX
 
-raw_path=$1
-storage_path="./data"
-
-echo "Raw data path: $path"
-    python3 prepare_data.py --data_path $path --max_len 512 --storage_dir $storage_path
-echo ""
-echo "Training and evaluating model.."
-python train.py --train_data $storage_path/train_data.json --val_data $storage_path/val_data.json --log ./log --batch_size 32 --epochs 20 --max_length 512 --checkpoint ./checkpoint --lr 3e-3 --fasttext ./data/fasttext.vec --config ./config/
+python main.py \
+    --data_dir $DATA_DIR \
+    --train_file train_data.json \
+    --val_file val_data.json \
+    --test_file test_data.json \
+    --do_predict \
+    --batch_size 32 \
+    --epochs 20 \
+    --max_length 512 \
+    --lr 3e-3 \
+    --config_dir ./config \
+    --model_dir model \
+    --log_dir tmp/log/

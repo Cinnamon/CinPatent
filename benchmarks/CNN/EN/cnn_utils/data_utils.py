@@ -9,7 +9,7 @@ from torch.utils.data import TensorDataset, DataLoader
 from sklearn.preprocessing import MultiLabelBinarizer
 import nltk
 import logging
-from utils.utils import logger
+from cnn_utils.utils import logger
 
 def read_json_data(train_path: str, valid_path: str):
     with open(train_path, 'r', encoding='utf-8') as f:
@@ -53,8 +53,7 @@ def dataset(train_path: str, val_path: str, fasttext_path: str, batch_size: int,
 
     if not os.path.exists(fasttext_path):
         dump_word_embeddings(fasttext_path)
-    
-    fasttext = torchtext.vocab.Vectors(fasttext_path, cache='./data/')
+    fasttext = torchtext.vocab.Vectors(name=fasttext_path)
     w2idx = fasttext.stoi
 
     pad_idx, unk_idx = w2idx['<pad>'], w2idx['<unk>']
