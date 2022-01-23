@@ -1,14 +1,11 @@
 import json
 from typing import Dict, List
 import numpy as np
-import torchtext
 from tqdm import tqdm
-import os
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.preprocessing import MultiLabelBinarizer
-import nltk
-from utils.utils import logger
+from cnn_utils.utils import logger
 import MeCab
 wakati = MeCab.Tagger("-Owakati")
 

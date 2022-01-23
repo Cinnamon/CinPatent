@@ -1,6 +1,6 @@
 import torch
 import argparse
-from utils.data_utils import *
+from cnn_utils.data_utils import *
 from train import initialize_model, validate
 import warnings
 warnings.filterwarnings("ignore")

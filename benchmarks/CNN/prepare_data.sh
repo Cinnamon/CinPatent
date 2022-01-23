@@ -1,1 +1,0 @@
-python3 prepare_data.py --data_path $path --max_len 512 --storage_dir $storage_path
