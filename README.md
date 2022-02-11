@@ -27,7 +27,7 @@ We partition data with ratio 80:10:10 for training, development, and testing. Fo
 
 ## Structure
 
-The datasets are available with multiple ratios: 10%, 25%, 50%, 75%, and 100%.
+The datasets are available with multiple ratios: 5%, 10%, 25%, 50%, 75%, and 100%.
 
 ```
 data
